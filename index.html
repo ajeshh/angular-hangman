@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.14/angular.min.js"></script>
+  <meta charset="utf-8">
+  <title>HangMan</title>
+</head>
+<body ng-app>
+  <div ng-controller="HangManCtrl">
+    <form ng-submit="addWord()">
+      <input type="password" name="newWord" ng-model="newWord" placeholder="Enter A New Word"> <br>
+      <button> Add Word</button>
+     </form>
+ 
+     <span ng-repeat="char in displayChars() track by $index" >
+       {{char}}
+     </span>
+ 
+     <form ng-submit="addGuess()">
+       <input type="text" ng-model="guess">
+       <button>Check Guess</button>
+     </form>
+     <div ng-repeat="guessedChar in guessedChars" ng-style="isGuessed()">
+       {{guessedChar}} 
+     </div>
+     <div>
+        <ng-pluralize count="guessedChars.length"
+           when="{'0': 'you have not guessed.',
+                  '1': 'you have guessed {{guessedChars.length}} time',
+                  'other': 'you have guessed {{guessedChars.length}} times'}">
+         </ng-pluralize>
+     </div>
+  </div>
+<script id="jsbin-javascript">
+var HangManCtrl = function($scope) {
+    $scope.currentWord = "angular";
+    $scope.guessedChars = [];
+
+  
+  //new word
+    $scope.addWord = function(){
+        $scope.currentWord = $scope.newWord;
+        $scope.guessedChars = [];
+        $scope.newWord = "";
+    };
+
+// display characters guessed
+    $scope.displayChars = function(){
+      var chars = $scope.currentWord.split("");
+
+      chars.forEach(function(val, index){
+        if( $scope.guessedChars.indexOf(val) === -1){
+           chars[index] = "_";
+         }
+      });
+      return chars;
+    };
+
+// guessed words, display all
+    $scope.addGuess = function(){
+       if($scope.guessedChars.indexOf($scope.guess) === -1){
+          $scope.guessedChars.push($scope.guess);
+       }
+       $scope.guess = "";
+    };
+  
+  //guess
+   $scope.isGuessed = function() {
+        var chars = $scope.currentWord.split("");
+        return chars.indexOf(this.guessedChar) !== -1? $scope.guessedStyle : $scope.wrongStyle;
+    };
+};
+</script>
+ 
+ 
+ 
+<script id="jsbin-source-javascript" type="text/javascript">var HangManCtrl = function($scope) {
+    $scope.currentWord = "angular";
+    $scope.guessedChars = [];
+
+  
+  //new word
+    $scope.addWord = function(){
+        $scope.currentWord = $scope.newWord;
+        $scope.guessedChars = [];
+        $scope.newWord = "";
+    };
+
+// display characters guessed
+    $scope.displayChars = function(){
+      var chars = $scope.currentWord.split("");
+
+      chars.forEach(function(val, index){
+        if( $scope.guessedChars.indexOf(val) === -1){
+           chars[index] = "_";
+         }
+      });
+      return chars;
+    };
+
+// guessed words, display all
+    $scope.addGuess = function(){
+       if($scope.guessedChars.indexOf($scope.guess) === -1){
+          $scope.guessedChars.push($scope.guess);
+       }
+       $scope.guess = "";
+    };
+  
+  //guess
+   $scope.isGuessed = function() {
+        var chars = $scope.currentWord.split("");
+        return chars.indexOf(this.guessedChar) !== -1? $scope.guessedStyle : $scope.wrongStyle;
+    };
+};
+</script></body>
+</html>
